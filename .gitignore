@@ -4,3 +4,6 @@
 # Firebase
 firebase/functions/node_modules/
 firebase/functions/package-lock.json
+
+# Godot web export output
+export/
