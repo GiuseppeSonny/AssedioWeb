@@ -1,13 +1,11 @@
 [gd_scene format=3 uid="uid://da0frra3qs6eu"]
 
 [ext_resource type="Script" uid="uid://cq7k0mimj8vlt" path="res://scripts/Player.gd" id="1_player"]
+[ext_resource type="Texture2D" uid="uid://c5ievfuy0r8pb" path="res://assets/shattered_assets/lucidity sprites/LarPain.png" id="2_v6fml"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
 radius = 6.0
 height = 14.0
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_1"]
-size = Vector2(12, 20)
 
 [node name="Player" type="CharacterBody2D" unique_id=2078870286]
 script = ExtResource("1_player")
@@ -15,9 +13,7 @@ script = ExtResource("1_player")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2050730876]
 shape = SubResource("CapsuleShape2D_1")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=180432531]
-modulate = Color(0.2, 0.4, 0.9, 1)
-z_index = 500
-position = Vector2(3.9999995, 12)
-scale = Vector2(0.9166666, 1.1500001)
-texture = SubResource("PlaceholderTexture2D_1")
+[node name="LarPain" type="Sprite2D" parent="." unique_id=1700653548]
+position = Vector2(10, 17)
+scale = Vector2(0.20312497, 0.19921878)
+texture = ExtResource("2_v6fml")
