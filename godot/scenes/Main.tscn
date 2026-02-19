@@ -1,17 +1,17 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://3hnpditawumk"]
 
-[ext_resource type="Script" path="res://scripts/Main.gd" id="1_main"]
+[ext_resource type="Script" uid="uid://vks8r2h03ovb" path="res://scripts/Main.gd" id="1_main"]
 
-[node name="Main" type="CanvasLayer"]
+[node name="Main" type="CanvasLayer" unique_id=370497654]
 script = ExtResource("1_main")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=2000128877]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color(0.12, 0.08, 0.05, 1)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=144738417]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -23,31 +23,28 @@ offset_right = 120.0
 offset_bottom = 80.0
 alignment = 1
 
-[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=1709801610]
 layout_mode = 2
+theme_override_font_sizes/font_size = 36
 text = "ASSEDIO"
 horizontal_alignment = 1
-theme_override_font_sizes/font_size = 36
 
-[node name="StatusLabel" type="Label" parent="VBoxContainer"]
-name = "StatusLabel"
+[node name="StatusLabel" type="Label" parent="VBoxContainer" unique_id=954984986]
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 text = "Signing in..."
 horizontal_alignment = 1
-theme_override_font_sizes/font_size = 14
 
-[node name="FindMatchBtn" type="Button" parent="VBoxContainer"]
-name = "FindMatchBtn"
+[node name="FindMatchBtn" type="Button" parent="VBoxContainer" unique_id=1498524907]
 layout_mode = 2
-text = "Find Match"
 disabled = true
+text = "Find Match"
 
-[node name="WaitingLabel" type="Label" parent="VBoxContainer"]
-name = "WaitingLabel"
+[node name="WaitingLabel" type="Label" parent="VBoxContainer" unique_id=405616040]
+visible = false
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 text = "Waiting for opponent..."
 horizontal_alignment = 1
-visible = false
-theme_override_font_sizes/font_size = 14
 
 [connection signal="pressed" from="VBoxContainer/FindMatchBtn" to="." method="_on_find_match_btn_pressed"]
