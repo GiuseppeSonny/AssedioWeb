@@ -177,36 +177,36 @@ func push_position(x: float, y: float) -> void:
 ## Implementation Steps (ordered)
 
 ### Phase 1 — Firebase Setup (no Godot yet)
-1. Create a Firebase project (free Spark plan).
-2. Enable **Anonymous Authentication**.
-3. Enable **Realtime Database** (start in test mode, then apply rules above).
-4. Enable **Cloud Functions** (requires billing account linked, but stays free under limits).
-5. Deploy `database.rules.json`.
-6. Write and deploy `joinRoom` and `leaveRoom` functions.
-7. Test functions with `curl` or Postman.
+1. [x] Create a Firebase project (free Spark plan).
+2. [x] Enable **Anonymous Authentication**.
+3. [x] Enable **Realtime Database** (start in test mode, then apply rules above).
+4. [x] Enable **Cloud Functions** (requires billing account linked, but stays free under limits).
+5. [x] Deploy `database.rules.json`.
+6. [x] Write and deploy `joinRoom` and `leaveRoom` functions.
+7. [ ] Test functions with `curl` or Postman.
 
 ### Phase 2 — Godot Firebase Layer
-1. Create `firebase_config.gd` with `API_KEY`, `PROJECT_ID`, `DB_URL`.
-2. Implement `Auth.gd`: POST to `identitytoolkit.googleapis.com` → store `uid` + `idToken`.
-3. Implement `Firebase.gd`: generic `http_put`, `http_get`, `http_post` helpers.
-4. Implement `Matchmaking.gd`: calls `joinRoom` / `leaveRoom`.
-5. Test: print `room_id` to console after matchmaking.
+1. [ ] Create `firebase_config.gd` with `API_KEY`, `PROJECT_ID`, `DB_URL`.
+2. [x] Implement `Auth.gd`: POST to `identitytoolkit.googleapis.com` → store `uid` + `idToken`.
+3. [x] Implement `Firebase.gd`: generic `http_put`, `http_get`, `http_post` helpers.
+4. [x] Implement `Matchmaking.gd`: calls `joinRoom` / `leaveRoom`.
+5. [ ] Test: print `room_id` to console after matchmaking.
 
 ### Phase 3 — Room & Movement
-1. Build `Room.tscn` with a simple walled tilemap.
-2. Build `Player.tscn` with placeholder sprite and collision.
-3. Implement `Player.gd` movement (WASD, `move_and_slide`).
-4. Implement `RoomSync.gd`:
-   - Timer-based `push_position` (every 100 ms).
-   - SSE listener for the remote player node.
-5. Spawn remote player when SSE detects a second UID in the room.
-6. Interpolate remote player position with `lerp`.
+1. [x] Build `Room.tscn` with a simple walled tilemap.
+2. [x] Build `Player.tscn` with placeholder sprite and collision.
+3. [x] Implement `Player.gd` movement (WASD, `move_and_slide`).
+4. [x] Implement `RoomSync.gd`:
+   - [x] Timer-based `push_position` (every 100 ms).
+   - [x] SSE listener for the remote player node.
+5. [x] Spawn remote player when SSE detects a second UID in the room.
+6. [x] Interpolate remote player position with `lerp`.
 
 ### Phase 4 — Polish & Cleanup
-1. Handle disconnect: call `leaveRoom` on `_notification(NOTIFICATION_WM_CLOSE_REQUEST)`.
-2. Show a "Waiting for opponent…" label until room is full.
-3. Constrain player movement to room bounds.
-4. Add basic medieval sprite placeholders.
+1. [x] Handle disconnect: call `leaveRoom` on `_notification(NOTIFICATION_WM_CLOSE_REQUEST)`.
+2. [x] Show a "Waiting for opponent…" label until room is full.
+3. [x] Constrain player movement to room bounds.
+4. [x] Add basic medieval sprite placeholders.
 
 ---
 
