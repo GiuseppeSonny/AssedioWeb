@@ -1,7 +1,6 @@
 # Godot
 .godot/
 *.import
-export_presets.cfg
 
 # Firebase credentials — NEVER commit this
 firebase_config.gd
