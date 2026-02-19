@@ -94,6 +94,13 @@ tile_set = SubResource("TileSet_6iwk6")
 [node name="StaticBody2D" type="StaticBody2D" parent="TowerLevel" unique_id=1355613983]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TowerLevel/StaticBody2D" unique_id=676005457]
-position = Vector2(41, 130.5)
+z_index = 1000
+position = Vector2(40, 132)
+scale = Vector2(1.9200009, 4.508566)
+shape = SubResource("RectangleShape2D_hfcue")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="TowerLevel/StaticBody2D" unique_id=2007847616]
+z_index = 1000
+position = Vector2(280, 130)
 scale = Vector2(1.9200009, 4.508566)
 shape = SubResource("RectangleShape2D_hfcue")
