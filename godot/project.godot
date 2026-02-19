@@ -1,16 +1,32 @@
 ; Engine configuration file.
 ; It's best edited using the editor UI and not directly,
-; but this file can be edited manually too.
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
 
 config_version=5
+
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
 config/name="ASSEDIO"
 config/version="0.1.0"
 run/main_scene="res://scenes/Main.tscn"
-config/features=PackedStringArray("4.2", "Forward Plus")
+config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+config/bundle_identifier="com.scirocco.assedio"
+
+[autoload]
+
+FirebaseConfig="*res://firebase_config.gd"
+Auth="*res://scripts/Auth.gd"
+Firebase="*res://scripts/Firebase.gd"
+Matchmaking="*res://scripts/Matchmaking.gd"
 
 [display]
 
@@ -19,18 +35,6 @@ window/size/viewport_height=240
 window/size/window_width_override=640
 window/size/window_height_override=480
 window/stretch/mode="canvas_items"
-window/stretch/aspect="keep"
-
-[application/config]
-
-bundle_identifier="com.scirocco.assedio"
-
-[autoload]
-
-FirebaseConfig="*res://firebase_config.gd"
-Auth="*res://scripts/Auth.gd"
-Firebase="*res://scripts/Firebase.gd"
-Matchmaking="*res://scripts/Matchmaking.gd"
 
 [rendering]
 

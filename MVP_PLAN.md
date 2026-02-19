@@ -183,10 +183,10 @@ func push_position(x: float, y: float) -> void:
 4. [x] Enable **Cloud Functions** (requires billing account linked, but stays free under limits).
 5. [x] Deploy `database.rules.json`.
 6. [x] Write and deploy `joinRoom` and `leaveRoom` functions.
-7. [ ] Test functions with `curl` or Postman.
+7. [x] Test functions with `curl` or Postman.
 
 ### Phase 2 — Godot Firebase Layer
-1. [ ] Create `firebase_config.gd` with `API_KEY`, `PROJECT_ID`, `DB_URL`.
+1. [x] Create `firebase_config.gd` with `API_KEY`, `PROJECT_ID`, `DB_URL`.
 2. [x] Implement `Auth.gd`: POST to `identitytoolkit.googleapis.com` → store `uid` + `idToken`.
 3. [x] Implement `Firebase.gd`: generic `http_put`, `http_get`, `http_post` helpers.
 4. [x] Implement `Matchmaking.gd`: calls `joinRoom` / `leaveRoom`.

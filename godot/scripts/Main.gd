@@ -1,8 +1,8 @@
 extends CanvasLayer
 
-@onready var find_match_btn: Button = $FindMatchBtn
-@onready var waiting_label: Label = $WaitingLabel
-@onready var status_label: Label = $StatusLabel
+@onready var find_match_btn: Button = $VBoxContainer/FindMatchBtn
+@onready var waiting_label: Label = $VBoxContainer/WaitingLabel
+@onready var status_label: Label = $VBoxContainer/StatusLabel
 
 func _ready() -> void:
 	find_match_btn.disabled = true
