@@ -56,6 +56,7 @@ func _poll_fetch(slot: int, key: String, callback: Callable) -> void:
 		t.queue_free()
 		if slot < _pending_fetches.size():
 			_pending_fetches[slot] = true
+		print("Firebase._fetch result [%s]: " % key, str(result).substr(0, 200))
 		var parsed: Variant = JSON.parse_string(str(result))
 		callback.call(parsed)
 	)
