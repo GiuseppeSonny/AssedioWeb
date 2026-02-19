@@ -12,60 +12,48 @@ exports.joinRoom = onCall(async (request) => {
   const db = getDatabase();
   const roomsRef = db.ref("rooms");
 
-  // Find a waiting room
+  const STALE_MS = 30000;
+  const now = Date.now();
+
+  // Find a waiting room that is not stale and doesn't already have this player
   const snapshot = await roomsRef
     .orderByChild("status")
     .equalTo("waiting")
     .limitToFirst(10)
     .get();
 
-  let roomId = null;
-  const STALE_MS = 30000;
-  const now = Date.now();
+  let joinRoomId = null;
 
   if (snapshot.exists()) {
-    // Find a non-stale waiting room and try to claim it atomically
-    for (const child of Object.values(snapshot.val())) {
-      // skip stale rooms (host disconnected)
-      const players = child.players || {};
-      const playerUids = Object.keys(players);
-      const isStale = playerUids.length === 0 ||
-        playerUids.every(p => (now - (players[p].last_seen || 0)) > STALE_MS);
+    for (const [key, room] of Object.entries(snapshot.val())) {
+      const players = room.players || {};
+      const uids = Object.keys(players);
+      const isStale = uids.length === 0 ||
+        uids.every(p => (now - (players[p].last_seen || 0)) > STALE_MS);
       if (isStale) continue;
-      // skip if this player is already in this room
-      if (players[uid]) continue;
-      roomId = Object.keys(snapshot.val()).find(k => snapshot.val()[k] === child);
+      if (players[uid]) continue; // already in this room
+      joinRoomId = key;
       break;
     }
-
-    if (roomId) {
-      const roomRef = roomsRef.child(roomId);
-      const result = await roomRef.transaction((room) => {
-        if (room === null) return room;
-        if (room.status !== "waiting") return; // abort — already taken
-        if (room.players && room.players[uid]) return; // already in this room
-        room.status = "full";
-        if (!room.players) room.players = {};
-        room.players[uid] = { x: 160, y: 120, last_seen: Date.now() };
-        return room;
-      });
-      if (!result.committed) roomId = null;
-    }
   }
 
-  if (roomId === null) {
-    // Create a new waiting room
-    const newRoom = roomsRef.push();
-    roomId = newRoom.key;
-    await newRoom.set({
-      status: "waiting",
-      players: {
-        [uid]: { x: 64, y: 64, last_seen: Date.now() },
-      },
+  if (joinRoomId) {
+    // Join the existing waiting room
+    await roomsRef.child(`${joinRoomId}/players/${uid}`).set({
+      x: 160, y: 120, last_seen: now,
     });
+    await roomsRef.child(`${joinRoomId}/status`).set("full");
+    return { room_id: joinRoomId };
   }
 
-  return { room_id: roomId };
+  // No suitable room found — create a new waiting room
+  const newRoom = roomsRef.push();
+  const newRoomId = newRoom.key;
+  await newRoom.set({
+    status: "waiting",
+    players: { [uid]: { x: 64, y: 64, last_seen: now } },
+  });
+  return { room_id: newRoomId };
 });
 
 exports.leaveRoom = onCall(async (request) => {
