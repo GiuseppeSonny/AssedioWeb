@@ -23,7 +23,7 @@ fi
 mkdir -p "$EXPORT_DIR"
 
 echo ">> Exporting project for Web..."
-"$GODOT" --headless --path "$GODOT_PROJECT_DIR" --export-release "Web" "$EXPORT_DIR/assedio.html"
+"$GODOT" --headless --path "$GODOT_PROJECT_DIR" --export-release "Web" "$EXPORT_DIR/index.html"
 
 echo ""
 echo ">> Export complete!"
@@ -46,7 +46,7 @@ fi
 echo ">> Freeing port 8080..."
 lsof -ti:8080 | xargs kill -9 2>/dev/null || true
 
-echo ">> Starting local preview server at http://localhost:8080/assedio.html"
+echo ">> Starting local preview server at http://localhost:8080/"
 echo "   (Press Ctrl+C to stop)"
 echo ""
 
@@ -64,7 +64,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         pass  # suppress request logs
 
-print(f"  Open: http://localhost:{PORT}/assedio.html")
+print(f"  Open: http://localhost:{PORT}/")
 with socketserver.TCPServer(("", PORT), Handler) as httpd:
     httpd.serve_forever()
 EOF
