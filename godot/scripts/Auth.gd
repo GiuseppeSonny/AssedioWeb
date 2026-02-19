@@ -10,7 +10,7 @@ func sign_in_anonymous() -> void:
 	add_child(http)
 	http.request_completed.connect(_on_sign_in.bind(http))
 	var url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + FirebaseConfig.API_KEY
-	http.request(url, ["Content-Type: application/json"], HTTPClient.METHOD_POST,
+	http.request(url, PackedStringArray(["Content-Type: application/json"]), HTTPClient.METHOD_POST,
 			JSON.stringify({"returnSecureToken": true}))
 
 func _on_sign_in(_result: int, _code: int, _headers: PackedStringArray, body: PackedByteArray, http: HTTPRequest) -> void:
