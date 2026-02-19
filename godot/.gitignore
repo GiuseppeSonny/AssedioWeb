@@ -1,7 +1,9 @@
-# Godot
+# Godot generated
 .godot/
 *.import
-export_presets.cfg
+*.uid
+*.translation
+*.remap
 
 # Firebase credentials — NEVER commit this
-scripts/firebase_config.gd
+firebase_config.gd

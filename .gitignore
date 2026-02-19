@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+
+# Firebase generated/cache
+.firebase/
+firebase/functions/node_modules/
+firebase/functions/package-lock.json
+
+# Godot web export output
+export/
+
+# Node
+node_modules/
+package-lock.json

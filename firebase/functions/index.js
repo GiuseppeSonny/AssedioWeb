@@ -12,35 +12,48 @@ exports.joinRoom = onCall(async (request) => {
   const db = getDatabase();
   const roomsRef = db.ref("rooms");
 
+  const STALE_MS = 30000;
+  const now = Date.now();
+
+  // Find a waiting room that is not stale and doesn't already have this player
   const snapshot = await roomsRef
     .orderByChild("status")
     .equalTo("waiting")
-    .limitToFirst(1)
+    .limitToFirst(10)
     .get();
 
-  let roomId;
+  let joinRoomId = null;
+
   if (snapshot.exists()) {
-    snapshot.forEach((child) => {
-      roomId = child.key;
-    });
-    await roomsRef.child(`${roomId}/players/${uid}`).set({
-      x: 160,
-      y: 120,
-      last_seen: Date.now(),
-    });
-    await roomsRef.child(`${roomId}/status`).set("full");
-  } else {
-    const newRoom = roomsRef.push();
-    roomId = newRoom.key;
-    await newRoom.set({
-      status: "waiting",
-      players: {
-        [uid]: { x: 64, y: 64, last_seen: Date.now() },
-      },
-    });
+    for (const [key, room] of Object.entries(snapshot.val())) {
+      const players = room.players || {};
+      const uids = Object.keys(players);
+      const isStale = uids.length === 0 ||
+        uids.every(p => (now - (players[p].last_seen || 0)) > STALE_MS);
+      if (isStale) continue;
+      if (players[uid]) continue; // already in this room
+      joinRoomId = key;
+      break;
+    }
   }
 
-  return { room_id: roomId };
+  if (joinRoomId) {
+    // Join the existing waiting room
+    await roomsRef.child(`${joinRoomId}/players/${uid}`).set({
+      x: 160, y: 120, last_seen: now,
+    });
+    await roomsRef.child(`${joinRoomId}/status`).set("full");
+    return { room_id: joinRoomId };
+  }
+
+  // No suitable room found — create a new waiting room
+  const newRoom = roomsRef.push();
+  const newRoomId = newRoom.key;
+  await newRoom.set({
+    status: "waiting",
+    players: { [uid]: { x: 64, y: 64, last_seen: now } },
+  });
+  return { room_id: newRoomId };
 });
 
 exports.leaveRoom = onCall(async (request) => {

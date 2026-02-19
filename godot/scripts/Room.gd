@@ -9,6 +9,10 @@ var remote_player: CharacterBody2D = null
 const PLAYER_SCENE := preload("res://scenes/Player.tscn")
 
 func _ready() -> void:
+	if Matchmaking.room_id == "" or Auth.uid == "":
+		push_error("Room: entered without valid room_id or uid — returning to main")
+		get_tree().change_scene_to_file("res://scenes/Main.tscn")
+		return
 	_spawn_local_player()
 	room_sync.remote_moved.connect(_on_remote_moved)
 	room_sync.remote_disconnected.connect(_on_remote_disconnected)

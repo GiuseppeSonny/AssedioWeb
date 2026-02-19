@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://room"]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/Room.gd" id="1_room"]
 [ext_resource type="Script" path="res://scripts/RoomSync.gd" id="2_roomsync"]

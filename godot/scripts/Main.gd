@@ -1,17 +1,26 @@
 extends CanvasLayer
 
-@onready var find_match_btn: Button = $FindMatchBtn
-@onready var waiting_label: Label = $WaitingLabel
-@onready var status_label: Label = $StatusLabel
+@onready var find_match_btn: Button = $VBoxContainer/FindMatchBtn
+@onready var waiting_label: Label = $VBoxContainer/WaitingLabel
+@onready var status_label: Label = $VBoxContainer/StatusLabel
 
 func _ready() -> void:
 	find_match_btn.disabled = true
 	waiting_label.visible = false
-	status_label.text = "Signing in..."
 
+	if Auth.signed_in.is_connected(_on_signed_in):
+		Auth.signed_in.disconnect(_on_signed_in)
+	if Matchmaking.room_joined.is_connected(_on_room_joined):
+		Matchmaking.room_joined.disconnect(_on_room_joined)
 	Auth.signed_in.connect(_on_signed_in)
 	Matchmaking.room_joined.connect(_on_room_joined)
-	Auth.sign_in_anonymous()
+
+	if Auth.uid != "":
+		status_label.text = "Ready"
+		find_match_btn.disabled = false
+	else:
+		status_label.text = "Signing in..."
+		Auth.sign_in_anonymous()
 
 	get_tree().set_auto_accept_quit(false)
 
