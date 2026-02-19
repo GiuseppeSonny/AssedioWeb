@@ -1,0 +1,53 @@
+[gd_scene load_steps=2 format=3 uid="uid://main"]
+
+[ext_resource type="Script" path="res://scripts/Main.gd" id="1_main"]
+
+[node name="Main" type="CanvasLayer"]
+script = ExtResource("1_main")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.12, 0.08, 0.05, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -80.0
+offset_right = 120.0
+offset_bottom = 80.0
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "ASSEDIO"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 36
+
+[node name="StatusLabel" type="Label" parent="VBoxContainer"]
+name = "StatusLabel"
+layout_mode = 2
+text = "Signing in..."
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 14
+
+[node name="FindMatchBtn" type="Button" parent="VBoxContainer"]
+name = "FindMatchBtn"
+layout_mode = 2
+text = "Find Match"
+disabled = true
+
+[node name="WaitingLabel" type="Label" parent="VBoxContainer"]
+name = "WaitingLabel"
+layout_mode = 2
+text = "Waiting for opponent..."
+horizontal_alignment = 1
+visible = false
+theme_override_font_sizes/font_size = 14
+
+[connection signal="pressed" from="VBoxContainer/FindMatchBtn" to="." method="_on_find_match_btn_pressed"]
