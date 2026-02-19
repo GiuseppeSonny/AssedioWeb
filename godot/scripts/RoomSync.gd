@@ -14,6 +14,8 @@ var _sse_client: HTTPClient = null
 var _sse_request_sent: bool = false
 var _sse_buffer: String = ""
 var _sse_path: String = ""
+var _sse_event: String = ""  # current SSE event type
+var _sse_players_cache: Dictionary = {}  # last known full players snapshot
 
 func start(rid: String, player: CharacterBody2D) -> void:
 	room_id = rid
@@ -109,9 +111,13 @@ func _process_players(players: Variant) -> void:
 	for player_uid in players:
 		if player_uid == Auth.uid:
 			continue
+		var entry: Variant = players[player_uid]
+		if typeof(entry) != TYPE_DICTIONARY:
+			continue
+		if not entry.has("x") or not entry.has("y"):
+			continue
 		found_remote = true
-		var p: Dictionary = players[player_uid]
-		emit_signal("remote_moved", Vector2(float(p["x"]), float(p["y"])))
+		emit_signal("remote_moved", Vector2(float(entry["x"]), float(entry["y"])))
 	if not found_remote:
 		emit_signal("remote_disconnected")
 
@@ -151,9 +157,35 @@ func _flush_sse_buffer() -> void:
 		_parse_sse_line(line.strip_edges())
 
 func _parse_sse_line(line: String) -> void:
+	if line.begins_with("event:"):
+		_sse_event = line.substr(6).strip_edges()
+		return
 	if not line.begins_with("data:"):
 		return
 	var json: Variant = JSON.parse_string(line.substr(5).strip_edges())
-	if json == null or not json.has("data") or json["data"] == null:
+	if json == null or not json.has("data"):
 		return
-	_process_players(json["data"])
+	var path: String = json.get("path", "/")
+	var data: Variant = json["data"]
+	if _sse_event == "put" and path == "/":
+		# Full snapshot of all players
+		if typeof(data) == TYPE_DICTIONARY:
+			_sse_players_cache = data
+			_process_players(_sse_players_cache)
+	elif _sse_event == "put" or _sse_event == "patch":
+		# Partial update: path is like "/uid" or "/uid/x"
+		var parts := path.lstrip("/").split("/")
+		if parts.size() == 1 and parts[0] != "":
+			# Full player update: /uid -> {x,y,...}
+			if typeof(data) == TYPE_DICTIONARY:
+				_sse_players_cache[parts[0]] = data
+			elif data == null:
+				_sse_players_cache.erase(parts[0])
+			_process_players(_sse_players_cache)
+		elif parts.size() == 2 and parts[0] != "":
+			# Single field update: /uid/x -> float
+			if not _sse_players_cache.has(parts[0]):
+				_sse_players_cache[parts[0]] = {}
+			_sse_players_cache[parts[0]][parts[1]] = data
+			_process_players(_sse_players_cache)
+	_sse_event = ""
