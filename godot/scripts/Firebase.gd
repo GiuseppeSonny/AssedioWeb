@@ -34,6 +34,6 @@ func _request(url: String, method: int, body: Dictionary, callback: Callable,
 		var parsed = JSON.parse_string(b.get_string_from_utf8())
 		callback.call(parsed)
 	)
-	var headers: Array = ["Content-Type: application/json"] + extra_headers
+	var headers: Array = ["Content-Type: application/json", "Accept-Encoding: identity"] + extra_headers
 	var body_str: String = JSON.stringify(body) if not body.is_empty() else ""
 	http.request(url, PackedStringArray(headers), method, body_str)
