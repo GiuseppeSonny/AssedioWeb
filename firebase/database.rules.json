@@ -1,6 +1,7 @@
 {
   "rules": {
     "rooms": {
+      ".indexOn": ["status"],
       "$room_id": {
         ".read": "auth != null",
         "players": {
