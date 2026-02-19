@@ -27,7 +27,7 @@ bundle_identifier="com.scirocco.assedio"
 
 [autoload]
 
-FirebaseConfig="*res://scripts/firebase_config.gd"
+FirebaseConfig="*res://firebase_config.gd"
 Auth="*res://scripts/Auth.gd"
 Firebase="*res://scripts/Firebase.gd"
 Matchmaking="*res://scripts/Matchmaking.gd"

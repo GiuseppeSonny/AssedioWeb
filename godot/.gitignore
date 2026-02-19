@@ -4,4 +4,4 @@
 export_presets.cfg
 
 # Firebase credentials — NEVER commit this
-scripts/firebase_config.gd
+firebase_config.gd
