@@ -12,24 +12,39 @@ exports.joinRoom = onCall(async (request) => {
   const db = getDatabase();
   const roomsRef = db.ref("rooms");
 
+  // Find a waiting room
   const snapshot = await roomsRef
     .orderByChild("status")
     .equalTo("waiting")
     .limitToFirst(1)
     .get();
 
-  let roomId;
+  let roomId = null;
+
   if (snapshot.exists()) {
+    // Try to atomically claim it via transaction
     snapshot.forEach((child) => {
       roomId = child.key;
     });
-    await roomsRef.child(`${roomId}/players/${uid}`).set({
-      x: 160,
-      y: 120,
-      last_seen: Date.now(),
+    const roomRef = roomsRef.child(roomId);
+    const result = await roomRef.transaction((room) => {
+      if (room === null) return room; // aborted
+      if (room.status !== "waiting") return; // abort — already taken
+      if (room.players && room.players[uid]) return; // already in this room
+      room.status = "full";
+      if (!room.players) room.players = {};
+      room.players[uid] = { x: 160, y: 120, last_seen: Date.now() };
+      return room;
     });
-    await roomsRef.child(`${roomId}/status`).set("full");
-  } else {
+
+    if (!result.committed) {
+      // Room was taken by another player simultaneously — create a new one
+      roomId = null;
+    }
+  }
+
+  if (roomId === null) {
+    // Create a new waiting room
     const newRoom = roomsRef.push();
     roomId = newRoom.key;
     await newRoom.set({
