@@ -1,9 +1,9 @@
-# Godot
+# Godot generated
 .godot/
 *.import
+*.uid
+*.translation
+*.remap
 
 # Firebase credentials — NEVER commit this
 firebase_config.gd
-
-# Godot UID cache files
-*.uid
