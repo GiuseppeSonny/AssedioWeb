@@ -6,6 +6,10 @@
 firebase/functions/node_modules/
 firebase/functions/package-lock.json
 
+# Godot firebase config (contains API keys — never commit)
+godot/firebase_config.gd
+godot/scripts/firebase_config.gd
+
 # Godot web export output
 export/
 
