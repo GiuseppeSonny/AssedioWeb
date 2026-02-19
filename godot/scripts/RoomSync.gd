@@ -95,7 +95,7 @@ func _flush_sse_buffer() -> void:
 func _parse_sse_line(line: String) -> void:
 	if not line.begins_with("data:"):
 		return
-	var json := JSON.parse_string(line.substr(5).strip_edges())
+	var json: Variant = JSON.parse_string(line.substr(5).strip_edges())
 	if json == null or not json.has("data") or json["data"] == null:
 		return
 	var players: Dictionary = json["data"]

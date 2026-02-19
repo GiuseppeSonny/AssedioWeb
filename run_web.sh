@@ -37,7 +37,7 @@ echo ""
 # Deploy to Firebase Hosting if --deploy flag is passed
 if [[ "$1" == "--deploy" ]]; then
   echo ">> Deploying to Firebase Hosting..."
-  "$NODE" "$FIREBASE" deploy --only hosting --project assedio-scirocco --config "$FIREBASE_DIR/firebase.json"
+  "$NODE" "$FIREBASE" deploy --only hosting --project assedio-scirocco
   echo ""
   echo ">> Live at: https://assedio-scirocco.web.app"
   echo ""
